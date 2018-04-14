@@ -26,4 +26,8 @@ io.sockets.on('connection', (socket) => {
         io.sockets.emit('new message', {msg: data, id: socket.id});
     });
     
+    socket.on('typing', (data) => {
+        socket.broadcast.emit('typing', data);
+    });
+
 });

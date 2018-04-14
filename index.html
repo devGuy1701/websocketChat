@@ -9,40 +9,53 @@
     <style>
         #area {
             border: 1px solid black;
-            min-height: 100px;
+            height: 500px;
             margin-bottom: 50px;
+            overflow-y: scroll;
         }
 
-        .msg {
-            
+        .msg { 
             padding: 15px;
         }
         
-        .msg:nth-child(odd) {
-            
+        .typing {
+            padding: 15px;
+            font-weight: 200;
+            color: gray;
         }
     </style>
 </head>
 <body>
 
-    <div id="area">
-
-    </div>
-    <p>Invia un messaggio:</p>
-    <textarea id="text" ></textarea>
-    <input type="submit" id="sub" onclick="send(event)"/>
+    <div id="area"></div>
+    <div class="typing"></div>
+    <p>Scrivi:</p>
+    <textarea id="text" onkeypress="writing()"></textarea>
+    <input type="submit" id="sub" onclick="send(event)" value="Invia il messaggio"/>
     
 </body>
 <script>
     let socket = io.connect();
     let area = document.querySelector('#area');
     let text = document.querySelector('#text');
+    let v = document.getElementsByClassName('typing')[0];
 
     function send(e) {
         let value = text.value;
-        socket.emit('send message', value);
+        if(value !== ''){
+            socket.emit('send message', value);
+        }
+        
         text.value = '';
     }
+
+    function writing(){
+        socket.emit('typing', '<em>' + socket.id + '</em>' + ' sta scrivendo...');
+    }
+
+    socket.on('typing', (data) => {
+        v.innerHTML = data;
+    });
 
     socket.on('new message', (data) => {
         let msg = data.msg;
@@ -54,7 +67,10 @@
             child.style.textAlign = 'right';
             child.innerHTML = msg;
         } else {
-            child.innerHTML = `${id}: ${msg}`;
+            child.innerHTML = `<b>${id}:</b> ${msg}`;
+        }
+        if(v !== null){
+            v.innerHTML = '';
         }
         
         area.appendChild(child);
