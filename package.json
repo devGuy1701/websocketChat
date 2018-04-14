@@ -1,0 +1,15 @@
+{
+  "name": "websocket",
+  "version": "1.0.0",
+  "description": "Prova chat",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Guido Brini",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "*",
+    "express": "*"
+  }
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/socket.io/socket.io.js"></script>
+    <title>Chat</title>
+    <style>
+        #area {
+            border: 1px solid black;
+            min-height: 100px;
+            margin-bottom: 50px;
+        }
+
+        .msg {
+            
+            padding: 15px;
+        }
+        
+        .msg:nth-child(odd) {
+            
+        }
+    </style>
+</head>
+<body>
+
+    <div id="area">
+
+    </div>
+    <p>Invia un messaggio:</p>
+    <textarea id="text" ></textarea>
+    <input type="submit" id="sub" onclick="send(event)"/>
+    
+</body>
+<script>
+    let socket = io.connect();
+    let area = document.querySelector('#area');
+    let text = document.querySelector('#text');
+
+    function send(e) {
+        let value = text.value;
+        socket.emit('send message', value);
+        text.value = '';
+    }
+
+    socket.on('new message', (data) => {
+        let msg = data.msg;
+        let id = data.id;
+        let mio_id = socket.id;
+        let child =document.createElement('div');
+        child.classList.add('msg');
+        if(id === mio_id) {
+            child.style.textAlign = 'right';
+            child.innerHTML = msg;
+        } else {
+            child.innerHTML = `${id}: ${msg}`;
+        }
+        
+        area.appendChild(child);
+    });
+    
+</script>
+</html>
