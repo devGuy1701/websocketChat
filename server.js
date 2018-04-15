@@ -15,7 +15,9 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
 io.sockets.on('connection', (socket) => {
     connections.push(socket);
-    console.log('Socket connessi: ',connections.length);
+    users.push(socket.id);
+    socket.broadcast.emit('connection', socket.id);
+    console.log('Socket connessi: ', connections.length);
 
     socket.on('disconnect', (data) => {
         connections.splice(connections.indexOf(socket), 1);

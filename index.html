@@ -53,6 +53,13 @@
         socket.emit('typing', '<em>' + socket.id + '</em>' + ' sta scrivendo...');
     }
 
+    socket.on('connection', (data) => {
+        let child = document.createElement('div');
+        child.classList.add('msg');
+        child.innerHTML = data + ' si è connesso';
+        area.appendChild(child);
+    });
+
     socket.on('typing', (data) => {
         v.innerHTML = data;
     });
