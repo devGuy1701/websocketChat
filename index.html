@@ -53,7 +53,7 @@
     let v = document.getElementsByClassName('typing')[0];
     
 
-    socket.on('getIp', data => document.querySelector('#clientIp').innerHTML = 'ClientIp: ' + data.clientIp );
+    socket.on('getIp', data => document.querySelector('#clientIp').innerHTML = '<b>ClientIp:</b> ' + data.clientIp + ' <b>ClientId:</b> ' + socket.id );
     
     function send(e) {
         let value = text.value;
