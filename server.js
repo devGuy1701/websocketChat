@@ -24,6 +24,7 @@ io.sockets.on('connection', socket => {
     socket.on('disconnect', data => {
         connections.splice(connections.indexOf(socket), 1);
         //console.log('socket disconnesso ', socket);
+        socket.broadcast.emit('disconnect', socket.id);
     });
 
     socket.on('send message', data => {
