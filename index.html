@@ -75,7 +75,7 @@
         area.appendChild(child);
     });
 
-    socket.on('disconnection', data => {
+    socket.on('socketDisconnect', data => {
         let child = document.createElement('div');
         child.classList.add('msg');
         child.innerHTML = data + ' si è disconnesso';
