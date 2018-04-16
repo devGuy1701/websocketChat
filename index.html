@@ -17,6 +17,10 @@
         .msg { 
             padding: 15px;
         }
+
+        .msg:nth-child(odd) {
+            background-color: #eee;
+        }
         
         .typing {
             padding: 15px;
@@ -49,9 +53,7 @@
     let v = document.getElementsByClassName('typing')[0];
     
 
-    socket.on('getIp', (data) => {
-        document.querySelector('#clientIp').innerHTML = 'ClientIp: ' + data.clientIp;
-    });
+    socket.on('getIp', data => document.querySelector('#clientIp').innerHTML = 'ClientIp: ' + data.clientIp );
     
     function send(e) {
         let value = text.value;
@@ -66,18 +68,16 @@
         socket.emit('typing', '<em>' + socket.id + '</em>' + ' sta scrivendo...');
     }
 
-    socket.on('connection', (data) => {
+    socket.on('connection', data => {
         let child = document.createElement('div');
         child.classList.add('msg');
         child.innerHTML = data + ' si è connesso';
         area.appendChild(child);
     });
 
-    socket.on('typing', (data) => {
-        v.innerHTML = data;
-    });
+    socket.on('typing', data => v.innerHTML = data );
 
-    socket.on('new message', (data) => {
+    socket.on('new message', data => {
         let msg = data.msg;
         let id = data.id;
         let mio_id = socket.id;

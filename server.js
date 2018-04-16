@@ -13,7 +13,7 @@ console.log('Server in funzione...');
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
-io.sockets.on('connection', (socket) => {
+io.sockets.on('connection', socket => {
     connections.push(socket);
     users.push(socket.id);
     let clientIp = socket.request.connection.remoteAddress;
@@ -21,16 +21,16 @@ io.sockets.on('connection', (socket) => {
     socket.broadcast.emit('connection', socket.id);
     console.log('Socket connessi: ', connections.length);
 
-    socket.on('disconnect', (data) => {
+    socket.on('disconnect', data => {
         connections.splice(connections.indexOf(socket), 1);
-        console.log('socket disconnesso ', socket);
+        //console.log('socket disconnesso ', socket);
     });
 
-    socket.on('send message', (data) => {
+    socket.on('send message', data => {
         io.sockets.emit('new message', {msg: data, id: socket.id});
     });
     
-    socket.on('typing', (data) => {
+    socket.on('typing', data => {
         socket.broadcast.emit('typing', data);
     });
 
