@@ -16,6 +16,8 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 io.sockets.on('connection', (socket) => {
     connections.push(socket);
     users.push(socket.id);
+    let clientIp = socket.request.connection.remoteAddress;
+    socket.emit('getIp', {clientIp});
     socket.broadcast.emit('connection', socket.id);
     console.log('Socket connessi: ', connections.length);
 

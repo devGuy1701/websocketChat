@@ -23,10 +23,18 @@
             font-weight: 200;
             color: gray;
         }
+
+        #sub {
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            background: lightblue;
+        }
     </style>
 </head>
-<body>
-
+<body>  
+    <p id="clientIp"></p>
     <div id="area"></div>
     <div class="typing"></div>
     <p>Scrivi:</p>
@@ -39,7 +47,12 @@
     let area = document.querySelector('#area');
     let text = document.querySelector('#text');
     let v = document.getElementsByClassName('typing')[0];
+    
 
+    socket.on('getIp', (data) => {
+        document.querySelector('#clientIp').innerHTML = 'ClientIp: ' + data.clientIp;
+    });
+    
     function send(e) {
         let value = text.value;
         if(value !== ''){
