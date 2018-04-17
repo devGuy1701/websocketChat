@@ -15,7 +15,7 @@ console.log('Server in funzione...');
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html') );
 
 io.sockets.on('connection', socket => {
-    socket.color = Math.random().toFixed() * 255 + ',' + Math.random().toFixed() * 255 + ',' + Math.random().toFixed() * 255;
+    socket.color = Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256);
     connections.push(socket);
     users.push(socket.id);
     let clientIp = socket.request.connection.remoteAddress;
