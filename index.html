@@ -29,20 +29,17 @@
         }
 
         #sub {
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            border: none;
-            background: lightblue;
+            
         }
     </style>
 </head>
 <body>  
+    <p>Websocket chat</p>
     <p id="clientIp"></p>
     <div id="area"></div>
     <div class="typing"></div>
     <p>Scrivi:</p>
-    <textarea id="text" onkeypress="writing()"></textarea>
+    <textarea id="text"></textarea>
     <input type="submit" id="sub" onclick="send(event)" value="Invia il messaggio"/>
     
 </body>
@@ -64,9 +61,9 @@
         text.value = '';
     }
 
-    function writing(){
-        socket.emit('typing', '<em>' + socket.id + '</em>' + ' sta scrivendo...');
-    }
+    text.addEventListener('focus', e => socket.emit('typing', '<em>' + socket.id + '</em>' + ' sta scrivendo...') );
+
+    text.addEventListener('blur', e => socket.emit('typing', '') );
 
     socket.on('connection', data => {
         let child = document.createElement('div');
@@ -88,13 +85,14 @@
         let msg = data.msg;
         let id = data.id;
         let mio_id = socket.id;
+        let color = data.color;
         let child =document.createElement('div');
         child.classList.add('msg');
         if(id === mio_id) {
             child.style.textAlign = 'right';
             child.innerHTML = msg;
-        } else {
-            child.innerHTML = `<b>${id}:</b> ${msg}`;
+        } else {    
+            child.innerHTML = `<b style="color: rgb(${color})">${id}:</b> ${msg}`;
         }
         if(v !== null){
             v.innerHTML = '';
